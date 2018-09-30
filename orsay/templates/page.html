@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> {{page.title}} </h2>
+
+{% include "nav_page.html" %}
+<hr/>
+
+{% for section in page.sections %}
+  {% include section.template %}
+{% endfor %}
+
+<hr/>
+{% include "nav_page.html" %}
+
+{% endblock content %}

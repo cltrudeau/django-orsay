@@ -1,0 +1,19 @@
+<div class="row">
+  <div class="col-md-1">
+    {% if page.prev_page %}
+      <a href="{{page.prev_page}}" 
+        class="btn btn-sm btn-outline-secondary">&lt;&lt;</a>
+    {% endif %}
+  </div>
+  <div class="col-md-10 text-center">
+      <a href=".." class="btn btn-sm btn-outline-secondary">
+        Trip
+      </a>
+  </div>
+  <div class="col-md-1 text-right"> 
+    {% if page.next_page %}
+      <a href="{{page.next_page}}" 
+        class="btn btn-sm btn-outline-secondary">&gt;&gt;</a>
+    {% endif %}
+  </div>
+</div>

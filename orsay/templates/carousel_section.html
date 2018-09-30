@@ -1,0 +1,35 @@
+<div id="{{section.carousel_id}}" class="carousel slide" 
+    data-interval=0>
+  <div class="carousel-inner">
+    {% for slide in section.slides %}
+      <div class="carousel-item {% if forloop.first %}active{% endif %}">
+        <div class="text-center">
+          <a class="magnify-slide hide-outline" href="{{slide.imagename}}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40">
+              <path
+               style="color:#000000;solid-color:#000000;fill:#ffffff;stroke:#000000;stroke-width:0.4;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;"
+               d="M 10.534571,1.225468 C 8.0718463,1.2327199 5.6110176,2.1742292 3.7381269,4.0471317 -0.00765457,7.7929368 -0.02702312,13.88984 3.7006161,17.652524 c 3.4854654,3.518234 9.0213899,3.739762 12.8204389,0.725213 l 2.356249,2.357639 a 1.0156342,1.0156342 0 0 0 -0.0055,1.460152 l 6.92426,6.92426 2.902242,-2.903632 -6.924259,-6.922871 a 1.0156342,1.0156342 0 0 0 -1.460152,0.0055 L 17.970093,16.955097 C 21.09053,13.15388 20.900399,7.531938 17.343519,4.0082314 15.462166,2.1444238 12.997297,1.2182165 10.534571,1.225468 Z m 0.0055,2.0186497 c 1.940127,-0.00582 3.881391,0.7290997 5.373805,2.2075941 2.984992,2.9571536 3.019084,7.7443962 0.07363,10.7448282 a 1.0156342,1.0156342 0 0 0 -0.0042,0.0055 l -0.09582,0.09309 C 12.887122,19.240651 8.1012687,19.207911 5.1440962,16.222937 2.1870885,13.238129 2.2014437,8.4569016 5.1746607,5.4836655 6.6612692,3.9970477 8.6000032,3.2499328 10.540128,3.2441177 Z"
+             />
+            </svg>
+          </a>
+        </div>
+        <img class="d-block w-100" src="{{slide.thumbname}}">
+        {% if slide.caption %}
+          <div class="carousel-caption d-none d-md-block">
+            <p><span class="caption-box">{{slide.caption}}</span></p>
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+  <a class="carousel-control-prev" href="#{{section.carousel_id}}"
+      role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#{{section.carousel_id}}"
+      role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+</div>

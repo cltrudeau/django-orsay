@@ -11,7 +11,10 @@
   </title>
 
   <link href="static/bootstrap.4.1.1.min.css" rel="stylesheet">
-  <link href="static/album.css" rel="stylesheet">
+  <link href="static/orsay.css" rel="stylesheet">
+  {% if settings.CSS %}
+    <link href="static/{{settings.CSS}}" rel="stylesheet">
+  {% endif %}
 
   {% block extra_head %}
   {% endblock extra_head %}
@@ -21,17 +24,27 @@
 <body>
 
   <header>
-    <div class="navbar navbar-dark bg-dark box-shadow">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
       <div class="container d-flex justify-content-between">
-        <a href="index.html" 
-            class="navbar-brand d-flex align-items-center">
-          <strong>{{settings.ALBUM_TITLE}}</strong>
-        </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+        <div class="navbar-brand">{{settings.ALBUM_TITLE}}</div>
+        <button class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarCollapse" aria-controls="navbarCollapse"
+            aria-expanded="false" aria-label="Toggle Navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
+        <div id="navbarCollapse" class="collapse navbar-collapse">
+          <ul class="navbar-nav mr-auto">
+            <li class="nav-item">
+              <a class="nav-link hide-outline" href=".">Trip</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link hide-outline" 
+                href="all_galleries.html">Galleries</a>
+            </li>
+          </ul>
+        </div>
       </div>
-    </div>
+    </nav>
   </header>
 
   <main role="main">

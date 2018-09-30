@@ -1,0 +1,40 @@
+main div.container {
+    padding-top:5em;
+    padding-bottom:1em;
+    margin-bottom: 1.5em;
+    background-color: white;
+    box-shadow: 0 .25rem .75rem #000;
+    min-height: 94vh;
+}
+
+.gallery-col {
+    padding:7px;
+}
+
+
+a.hide-outline, a.hide-outline:focus {
+    outline: 0;
+    color:rgba(255, 255, 255, 0.5) !important;
+}
+
+.carousel {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    margin-left: 15px;
+    margin-right: 15px;
+    box-shadow: 0 .25rem .75rem #000;
+}
+
+.magnify-slide {
+    position:absolute;
+    top: 10px;
+}
+
+.caption-box {
+    background-color: rgba(200, 200, 200, 0.8);
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    border-radius: 5px;
+}

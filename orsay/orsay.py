@@ -5,6 +5,7 @@ from screwdriver import DictObject
 
 from .boot_django import boot_django
 from .gallery import make_galleries
+from .pages import make_pages
 
 def make_album(user_config):
     ORSAY_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -44,5 +45,6 @@ def make_album(user_config):
 
     boot_django(extra_templates)
 
-    # make the galleries
+    # make the content
     make_galleries(content, settings)
+    make_pages(content, settings)
