@@ -17,27 +17,7 @@ def boot_django(extra_template_dirs=[]):
     settings.configure(
         BASE_DIR=ORSAY_DIR,
         DEBUG=True,
-        DATABASES={
-            'default':{
-                'ENGINE':'django.db.backends.sqlite3',
-                'NAME': os.path.join(ORSAY_DIR, 'db.sqlite3'),
-            }
-        },
-        ROOT_URLCONF='orsay.tests.urls',
-        MIDDLEWARE = (
-            'django.middleware.security.SecurityMiddleware',
-            'django.contrib.sessions.middleware.SessionMiddleware',
-            'django.middleware.common.CommonMiddleware',
-            'django.middleware.csrf.CsrfViewMiddleware',
-            'django.contrib.auth.middleware.AuthenticationMiddleware',
-            'django.contrib.messages.middleware.MessageMiddleware',
-            'django.middleware.clickjacking.XFrameOptionsMiddleware',
-        ),
         INSTALLED_APPS=(
-            'django.contrib.auth',
-            'django.contrib.contenttypes',
-            'django.contrib.sessions',
-            'django.contrib.admin',
             'orsay',
         ),
         TEMPLATES = [{
