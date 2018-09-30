@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" 
+    content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+
+  <title>
+    {{settings.ALBUM_TITLE}} {% if title %}&mdash; {{title}} {% endif %}
+  </title>
+
+  <link href="static/bootstrap.4.1.1.min.css" rel="stylesheet">
+  <link href="static/album.css" rel="stylesheet">
+
+  {% block extra_head %}
+  {% endblock extra_head %}
+  {% block extra_script %}
+  {% endblock extra_script %}
+</head>
+<body>
+
+  <header>
+    <div class="navbar navbar-dark bg-dark box-shadow">
+      <div class="container d-flex justify-content-between">
+        <a href="index.html" 
+            class="navbar-brand d-flex align-items-center">
+          <strong>{{settings.ALBUM_TITLE}}</strong>
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarHeader" aria-controls="navbarHeader" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main role="main">
+    <div class="container">
+      {% block content %}
+      {% endblock content %}
+    </div>
+
+  </main>
+
+  <script src="static/jquery-3.3.1.min.js"></script>
+  <script src="static/popper.1.14.3.min.js"></script>
+  <script src="static/bootstrap.4.1.1.min.js"></script>
+
+  {% block body_script %}
+  {% endblock body_script %}
+</body>
+</html>

@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2> Galleries By Date </h2>
+
+{% for row in rows %}
+  <div class="row">
+    {% for gallery in row %}
+      <div class="col-md-4">
+        <div class="card mb-4 box-shadow">
+          <a href="{{gallery.filename}}">
+            <img class="card-img-top" src="{{gallery.thumbname}}" 
+              width=300 height=300>
+          </a>
+          <div class="card-body">
+            <p class="card-text"> {{gallery.title}} </p>
+            <div class="align-items-right">
+            </div>
+              <a href="{{gallery.filename}}" 
+                class="btn btn-sm btn-outline-secondary">View</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+
+{% endblock content %}

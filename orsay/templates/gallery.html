@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2> {{title}} </h2>
+
+{% include "nav_gallery.html" %}
+<hr/>
+
+{% for row in rows %}
+  <div class="row">
+    {% for filename, thumbname in row %}
+      <div class="col-sm gallery-col">
+        <a href="{{filename}}">
+          <img class="mx-auto img-thumbnail" 
+            src="{{thumbname}}">
+        </a>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+<hr/>
+{% include "nav_gallery.html" %}
+
+{% endblock content %}
