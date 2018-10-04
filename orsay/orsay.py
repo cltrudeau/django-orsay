@@ -1,5 +1,4 @@
 import os, shutil
-from importlib.util import spec_from_file_location, module_from_spec
 
 from screwdriver import DictObject
 
@@ -7,7 +6,7 @@ from .boot_django import boot_django
 from .gallery import make_galleries
 from .pages import make_pages
 
-def make_album(user_config):
+def make_album(content, user_config):
     ORSAY_DIR = os.path.abspath(os.path.dirname(__file__))
     ORSAY_STATIC = os.path.join(ORSAY_DIR, 'static')
 
@@ -32,11 +31,6 @@ def make_album(user_config):
         for path in paths:
             if not path.name.startswith('.') and path.is_file():
                 shutil.copy(path, static_dest)
-
-    # load the user's content python file
-    spec = spec_from_file_location('content', settings.CONTENT)
-    content = module_from_spec(spec)
-    spec.loader.exec_module(content)
 
     # prep django with the passed in templates
     extra_templates = []

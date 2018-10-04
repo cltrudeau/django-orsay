@@ -46,7 +46,11 @@ class Slide(Section):
             print('WARNING!!! Multiple file matches for ', 
                 '*%s*, using first' % self.partial_name, matches)
 
-        self.imagename = matches[0]
+        try:
+            self.imagename = matches[0]
+        except IndexError:
+            raise AttributeError('no match for image *%s*' % self.partial_name)
+
         thumbname = thumbpath(self.imagename, 'thumb1024w')
         self.thumbname = os.path.relpath(thumbname, settings.ALBUM)
         self.imagename = os.path.relpath(self.imagename, settings.ALBUM)
