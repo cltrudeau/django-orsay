@@ -1,8 +1,11 @@
 import os
+from datetime import datetime
 from glob import glob
 
 from django.template import loader, Context, Template, TemplateSyntaxError
 from django.utils.safestring import mark_safe
+
+from screwdriver import list_to_rows
 
 from .utils import thumbpath
 
@@ -85,9 +88,11 @@ class Carousel(Section):
 
 
 class Page(object):
-    def __init__(self, filename, title, *args):
+    def __init__(self, filename, title, date, cover_image, *args):
         self.filename = filename
         self.title = title
+        self.cover_image = os.path.abspath(cover_image)
+        self._date = datetime.strptime(date, '%Y-%m-%d').date()
         self.sections = []
 
         for section in args:
@@ -96,9 +101,17 @@ class Page(object):
             else:
                 self.sections.append(section)
 
+    @property
+    def date(self):
+        d = self._date
+        return f'{d:%A} {d:%B} {d.day}, {d.year}'
+
+
     def init(self, settings, prev_page, next_page):
         self.prev_page = prev_page
         self.next_page = next_page
+        self.cover_image = os.path.relpath(os.path.join(settings.ALBUM,
+            self.cover_image))
         self.full_filename = os.path.abspath(os.path.join(settings.ALBUM,
             self.filename))
 
@@ -145,3 +158,20 @@ def make_pages(content, settings):
 
     for page in content.pages:
         page.make_file(settings)
+
+    # create the index page
+    template = loader.get_template('all_pages.html')
+
+    d = {
+        'settings':settings,
+        'title':settings.ALBUM_TITLE,
+        'static_path':settings.static_path,
+        'rows': list_to_rows(content.pages, 2)
+    }
+
+    # render template and write to file
+    result = template.render(d)
+
+    fname = os.path.abspath(os.path.join(settings.ALBUM, 'index.html'))
+    with open(fname, 'w') as f:
+        f.write(result)

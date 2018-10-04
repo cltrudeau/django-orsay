@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1 class="page-index-title text-center"> {{title}} </h1>
+
+{% for row in rows %}
+  <div class="row page-index-row">
+    {% for page in row %}
+      <div class="col-md-6">
+        <div class="card mb-6 h-100">
+          <a href="{{page.filename}}">
+            <img class="card-img-top" src="{{page.cover_image}}" 
+              width=500 height=500>
+          </a>
+          <div class="card-body">
+            <div class="page-index-card">
+              <h3 class="card-text"> {{page.title}} </h3>
+              <small class="text-muted">{{page.date}}</small>
+            </div>
+            <div class="align-items-right">
+            </div>
+              <a href="{{page.filename}}" 
+                class="btn btn-sm btn-outline-secondary">View</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+{% endfor %}
+
+
+{% endblock content %}
