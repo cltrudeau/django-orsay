@@ -25,6 +25,10 @@ a.hide-outline, a.hide-outline:focus {
     box-shadow: 0 .25rem .75rem #000;
 }
 
+.carousel-image {
+    max-height:88vh;
+}
+
 .magnify-slide {
     position:absolute;
     top: 10px;
