@@ -92,7 +92,11 @@ class Page(object):
         self.filename = filename
         self.title = title
         self.cover_image = os.path.abspath(cover_image)
-        self._date = datetime.strptime(date, '%Y-%m-%d').date()
+        
+        self._date = ''
+        if date:
+            self._date = datetime.strptime(date, '%Y-%m-%d').date()
+
         self.sections = []
 
         for section in args:
@@ -103,6 +107,9 @@ class Page(object):
 
     @property
     def date(self):
+        if not self_date:
+            return ''
+
         d = self._date
         return f'{d:%A} {d:%B} {d.day}, {d.year}'
 

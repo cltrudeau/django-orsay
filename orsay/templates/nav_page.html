@@ -7,7 +7,9 @@
   </div>
   <div class="col-md-10 text-center">
     <h2 class="page-nav"> {{page.title}} </h2>
-    <small class="page-nav text-muted">{{page.date}}</small>
+    {% if page.date %}
+      <small class="page-nav text-muted">{{page.date}}</small>
+    {% endif %}
   </div>
   <div class="col-md-1 text-right"> 
     {% if page.next_page %}
