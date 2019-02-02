@@ -107,7 +107,7 @@ class Page(object):
 
     @property
     def date(self):
-        if not self_date:
+        if not self._date:
             return ''
 
         d = self._date
