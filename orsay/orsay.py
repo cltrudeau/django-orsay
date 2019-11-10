@@ -1,10 +1,14 @@
-import os, shutil
+import glob, os, shutil, subprocess
+
+from PIL import Image, ImageDraw
 
 from screwdriver import DictObject
 
 from .boot_django import boot_django
 from .gallery import make_galleries
 from .pages import make_pages
+
+# ===========================================================================
 
 def make_album(content, user_config):
     ORSAY_DIR = os.path.abspath(os.path.dirname(__file__))
@@ -42,3 +46,62 @@ def make_album(content, user_config):
     # make the content
     make_galleries(content, settings)
     make_pages(content, settings)
+
+# ---------------------------------------------------------------------------
+
+def _thumbnail(src, dest, thumb_size):
+    image = Image.open(src)
+    width, height = image.size
+    if width > height:
+        square = Image.new('RGBA', (width, width), (255, 0, 0, 0))
+        square.paste(image, (0, (width - height) // 2))
+    elif height > width:
+        square = Image.new('RGBA', (height, height), (255, 0, 0, 0))
+        square.paste(image, ((height - width) // 2, 0))
+    else:
+        square = image
+
+    thumb = square.resize((thumb_size, thumb_size), Image.LANCZOS)
+    thumb.save(dest)
+
+
+def make_index_thumbnails(dirlist):
+    """Uses the Pillow image library to create the two kinds of thumbnails used
+    in the index pages. Does not create thumbnails for Carousels.
+
+    :param dirlist: list of strings of directories to run the generation on
+    """
+
+    extensions = ['jpg', 'gif']
+
+    for dirname in dirlist:
+        print('Generating thumbnails for %s' % dirname)
+
+        base = os.path.abspath(dirname)
+        sq150 = os.path.abspath(os.path.join(base, 'thumb150sq'))
+        sq500 = os.path.abspath(os.path.join(base, 'thumb500sq'))
+
+        os.makedirs(sq150, exist_ok=True)
+        os.makedirs(sq500, exist_ok=True)
+        
+        pictures = []
+        for ext in extensions:
+            pictures.extend(glob.glob(base + '/*.' + ext))
+            pictures.extend(glob.glob(base + '/*.' + ext.upper()))
+
+        print('   ', end='')
+        for src in pictures:
+            base = os.path.basename(src)
+            filename, ext = os.path.splitext(base)
+
+            dest = os.path.abspath(os.path.join(sq150, filename + '.png'))
+            if not os.path.isfile(dest):
+                _thumbnail(src, dest, 150)
+
+            dest = os.path.abspath(os.path.join(sq500, filename + '.png'))
+            if not os.path.isfile(dest):
+                _thumbnail(src, dest, 500)
+
+            print('.', end='', flush=True)
+
+        print()
