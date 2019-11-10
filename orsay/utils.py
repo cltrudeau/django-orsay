@@ -9,6 +9,6 @@ def thumbpath(filename, thumbdir):
     dirname, relname  = os.path.split(filename)
     base, _ = os.path.splitext(relname)
 
-    thumbname = os.path.join(dirname, thumbdir, base + '.gif')
+    thumbname = os.path.join(dirname, thumbdir, base + '.png')
     return thumbname
 

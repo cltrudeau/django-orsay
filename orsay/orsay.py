@@ -1,6 +1,6 @@
 import glob, os, shutil, subprocess
 
-from PIL import Image, ImageDraw
+from PIL import Image, ExifTags
 
 from screwdriver import DictObject
 
@@ -51,6 +51,29 @@ def make_album(content, user_config):
 
 def _thumbnail(src, dest, thumb_size):
     image = Image.open(src)
+
+    # handle exif orientation
+    #   -- lots of magic numbers in this code, found it at:
+    #        https://stackoverflow.com/questions/13872331
+    try:
+        for orientation in ExifTags.TAGS.keys():
+            if ExifTags.TAGS[orientation] == 'Orientation':
+                break
+        
+        exif = dict(image._getexif().items())
+        
+        if exif[orientation] == 3:
+            image = image.rotate(180, expand=True)
+        elif exif[orientation] == 6:
+            image = image.rotate(270, expand=True)
+        elif exif[orientation] == 8:
+            image = image.rotate(90, expand=True)
+
+    except (AttributeError, KeyError, IndexError):
+        # ignore image without exif info
+        pass
+
+    # create a padded square before shrinking
     width, height = image.size
     if width > height:
         square = Image.new('RGBA', (width, width), (255, 0, 0, 0))
@@ -61,13 +84,14 @@ def _thumbnail(src, dest, thumb_size):
     else:
         square = image
 
+    # shrink it
     thumb = square.resize((thumb_size, thumb_size), Image.LANCZOS)
     thumb.save(dest)
 
 
-def make_index_thumbnails(dirlist):
-    """Uses the Pillow image library to create the two kinds of thumbnails used
-    in the index pages. Does not create thumbnails for Carousels.
+def make_gallery_thumbnails(dirlist):
+    """Uses the Pillow image library to create the 150x150 thumbnails for the 
+    gallery pages.
 
     :param dirlist: list of strings of directories to run the generation on
     """
@@ -79,10 +103,7 @@ def make_index_thumbnails(dirlist):
 
         base = os.path.abspath(dirname)
         sq150 = os.path.abspath(os.path.join(base, 'thumb150sq'))
-        sq500 = os.path.abspath(os.path.join(base, 'thumb500sq'))
-
         os.makedirs(sq150, exist_ok=True)
-        os.makedirs(sq500, exist_ok=True)
         
         pictures = []
         for ext in extensions:
@@ -98,10 +119,33 @@ def make_index_thumbnails(dirlist):
             if not os.path.isfile(dest):
                 _thumbnail(src, dest, 150)
 
-            dest = os.path.abspath(os.path.join(sq500, filename + '.png'))
-            if not os.path.isfile(dest):
-                _thumbnail(src, dest, 500)
-
             print('.', end='', flush=True)
 
         print()
+
+
+def make_gallery_covers(content):
+    """Uses the Pillow image library to create 500x500 thumbnails for the
+    cover shots for each gallery index. Uses "content.py" to find what images
+    to create.
+
+    :param content: content object
+    """
+    print('Generating covers for gallery index page')
+    print('   ', end='')
+
+    for gallery in content.galleries:
+        base = os.path.abspath(gallery.dirname)
+        sq500 = os.path.abspath(os.path.join(base, 'thumb500sq'))
+        os.makedirs(sq500, exist_ok=True)
+
+        image_base = os.path.basename(gallery.image)
+        filename, ext = os.path.splitext(image_base)
+
+        dest = os.path.abspath(os.path.join(sq500, filename + '.png'))
+        if not os.path.isfile(dest):
+            _thumbnail(gallery.image, dest, 500)
+
+        print('.', end='', flush=True)
+
+    print()
