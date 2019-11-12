@@ -1,26 +1,62 @@
-Thumbnails for "orsay" with Image Magick
-========================================
+Thumbnails for "orsay"
+======================
+
+Prior to version 0.3.0 you had to generate your own thumbnails with something
+like ImageMagick. This is now done with Pillow. Two calls have been added for
+generating gallery thumbnails: "make_gallery_thumbnails()" and
+"make_gallery_covers". 
+
+A quick script to generate your thumbnail images that takes a list of
+directory names to generate them for:
+
+.. code-block:: python
+
+    import sys
+
+    from orsay.orsay import make_gallery_covers, make_gallery_thumbnails
+    import content
+
+    # =========================================================================
+
+    make_gallery_thumbnails(sys.argv[1:])
+    make_gallery_covers(content)  
+
+
+Where you have defined a file called "content.py" which contains the list of 
+gallery objects.
+
+The "make_album()" call now generates whatever thumbnails it needs for the
+slideshows that you define. 
+
+Details
+=======
 
 Three types of thumbnails are needed for the various pages created with orsay.
-For each image directory you have you need to create three thumbnail
-directories:
+Each directory where your images are found will have the necessary thumbnail
+directories created:
 
 * thumb150sq
 * thumb500sq
 * thumb1024w
 
 The first two are used for thumbnails for the galleries pages and the index
-pages. The third is used for the carousels. They need to be generated
-differently.
+pages. These create square images padded with transparency, 150x150 and
+500x500 respectively.
 
-All thubmnails will be created in .gif format in order to support
-transparency. Remember that different cameras use different extension names
-and you may need to generate for both '\*.JPG', '\*.jpg' and possible '\*.gif'
+The third is used for the carousels. These slide carousels currently use
+1024x768. Thumbs retain their aspect ratio and are padded with black
+backgrounds.
+
+All thubmnails are be created in .png format in order to support
+transparency. 
+
+ImageMagick
+===========
+
+Equivalent ImageMagick methods for generating the thumbnails are:
 
 Square Thumbnails
 -----------------
-
-Generate the square thumbnails with transparent backgrounds:
 
 .. code-block:: bash
 
@@ -31,8 +67,6 @@ Generate the square thumbnails with transparent backgrounds:
 
 Carousel Thumbnails
 -------------------
-
-Thumbnails for the carousel are padded differently and use a black background
 
 .. code-block:: bash
 
