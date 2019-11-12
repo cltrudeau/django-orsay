@@ -73,6 +73,7 @@ class Gallery(object):
 # ===========================================================================
 
 def make_galleries(content, settings):
+    print('Generating gallery pages')
     num_galleries = len(content.galleries)
     count = 1
 

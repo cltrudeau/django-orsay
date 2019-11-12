@@ -7,6 +7,7 @@ from django.utils.safestring import mark_safe
 
 from screwdriver import list_to_rows
 
+from .constants import SLIDE_THUMB_DIR
 from .utils import thumbpath
 
 # ===========================================================================
@@ -34,27 +35,41 @@ class Title(Section):
 class Slide(Section):
     def __init__(self, dirname, item):
         self.dirname = os.path.abspath(dirname)
+        self.thumbdir = os.path.abspath(os.path.join(dirname, SLIDE_THUMB_DIR))
         self.caption = ''
 
         if isinstance(item, tuple) or isinstance(item, list):
-            self.partial_name = item[0]
+            self.name_ends_in = str(item[0])
             self.caption = mark_safe(item[1])
         else:
-            self.partial_name = item
+            self.name_ends_in = str(item)
 
     def init(self, settings):
-        # look for partial_name in the directory
-        matches = glob(os.path.join(self.dirname, '*%s*' % self.partial_name))
+        # look for files that end with name_ends_in in the directory
+        matches = []
+        for filename in os.listdir(self.dirname):
+            filename = os.path.abspath(os.path.join(self.dirname, filename))
+            if os.path.isfile(filename):
+                filename_only = os.path.basename(filename)
+                name, ext = os.path.splitext(filename_only)
+                if name.lower().endswith(self.name_ends_in.lower()):
+                    matches.append(filename)
+
         if len(matches) > 1:
             print('WARNING!!! Multiple file matches for ', 
-                '*%s*, using first' % self.partial_name, matches)
+                '*%s*, using first' % self.name_ends_in, matches)
 
         try:
             self.imagename = matches[0]
-        except IndexError:
-            raise AttributeError('no match for image *%s*' % self.partial_name)
 
-        thumbname = thumbpath(self.imagename, 'thumb1024w')
+            if not os.path.isfile(self.imagename):
+                raise AttributeError(
+                    'matched image for %s was not a file: %s' % (
+                        self.name_ends_in, self.imagename))
+        except IndexError:
+            raise AttributeError('no match for image *%s*' % self.name_ends_in)
+
+        thumbname = thumbpath(self.imagename, SLIDE_THUMB_DIR)
         self.thumbname = os.path.relpath(thumbname, settings.ALBUM)
         self.imagename = os.path.relpath(self.imagename, settings.ALBUM)
 
@@ -143,6 +158,7 @@ class Page(object):
 # ===========================================================================
 
 def make_pages(content, settings):
+    print('Generating trip pages')
     output_filenames = set([])
     for i in range(0, len(content.pages)):
         page = content.pages[i]
