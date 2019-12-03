@@ -40,7 +40,7 @@ class Slide(Section):
 
         if isinstance(item, tuple) or isinstance(item, list):
             self.name_ends_in = str(item[0])
-            self.caption = mark_safe(item[1])
+            self.caption = mark_safe(' '.join(item[1:]))
         else:
             self.name_ends_in = str(item)
 

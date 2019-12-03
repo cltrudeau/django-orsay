@@ -75,7 +75,7 @@ def make_gallery_thumbnails(dirlist):
             pictures.extend(glob.glob(base + '/*.' + ext))
             pictures.extend(glob.glob(base + '/*.' + ext.upper()))
 
-        print('   ', end='')
+        first = True
         for src in pictures:
             base = os.path.basename(src)
             filename, ext = os.path.splitext(base)
@@ -83,11 +83,15 @@ def make_gallery_thumbnails(dirlist):
             dest = os.path.abspath(os.path.join(sq150, filename +
                 THUMB_FILE_EXT))
             if not os.path.isfile(dest):
+                if first:
+                    print('   ', end='')
+                    first = False
+
+                print('.', end='', flush=True)
                 create_thumbnail(src, dest, GALLERY_THUMB_SIZE)
 
-            print('.', end='', flush=True)
-
-        print()
+        if not first:
+            print()
 
 
 def make_gallery_covers(content):
@@ -114,8 +118,8 @@ def make_trip_images(content):
     :param content: content object with pages list in it
     """
     print('Generating carousel images')
-    print('   ', end='')
 
+    first = True
     for page in content.pages:
         cover_image = os.path.abspath(page.cover_image)
         dirname = os.path.join(os.path.basename(cover_image), COVER_THUMB_DIR)
@@ -136,7 +140,12 @@ def make_trip_images(content):
                 dest = os.path.abspath(slide.thumbname)
 
                 if not os.path.isfile(dest):
+                    if first:
+                        first = False
+                        print('   ', end='')
+
+                    print('.', end='', flush=True)
                     create_slide_image(src, dest)
 
-                print('.', end='', flush=True)
-    print()
+    if not first:
+        print()
