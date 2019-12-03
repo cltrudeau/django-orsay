@@ -122,7 +122,7 @@ def make_trip_images(content):
     first = True
     for page in content.pages:
         cover_image = os.path.abspath(page.cover_image)
-        dirname = os.path.join(os.path.basename(cover_image), COVER_THUMB_DIR)
+        dirname = os.path.dirname(cover_image)
         create_cover_image(dirname, cover_image)
 
         for section in page.sections:

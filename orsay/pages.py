@@ -7,7 +7,7 @@ from django.utils.safestring import mark_safe
 
 from screwdriver import list_to_rows
 
-from .constants import SLIDE_THUMB_DIR
+from .constants import SLIDE_THUMB_DIR, COVER_THUMB_DIR
 from .utils import thumbpath
 
 # ===========================================================================
@@ -128,6 +128,9 @@ class Page(object):
         d = self._date
         return f'{d:%A} {d:%B} {d.day}, {d.year}'
 
+    @property
+    def cover_image_thumbnail(self):
+        return thumbpath(self.cover_image, COVER_THUMB_DIR)
 
     def init(self, settings, prev_page, next_page):
         self.prev_page = prev_page
