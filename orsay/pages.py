@@ -1,4 +1,4 @@
-import os
+import os, inspect
 from datetime import datetime
 from glob import glob
 
@@ -33,9 +33,10 @@ class Title(Section):
 
 
 class Slide(Section):
-    def __init__(self, dirname, item):
+    def __init__(self, dirname, item, error_trace):
         self.dirname = os.path.abspath(dirname)
         self.thumbdir = os.path.abspath(os.path.join(dirname, SLIDE_THUMB_DIR))
+        self.error_trace = error_trace
         self.caption = ''
 
         if isinstance(item, tuple) or isinstance(item, list):
@@ -67,7 +68,9 @@ class Slide(Section):
                     'matched image for %s was not a file: %s' % (
                         self.name_ends_in, self.imagename))
         except IndexError:
-            raise AttributeError('no match for image *%s*' % self.name_ends_in)
+            msg = 'no match for image *%s*; error likely near %s' % (
+                self.name_ends_in, self.error_trace)
+            raise AttributeError(msg)
 
         thumbname = thumbpath(self.imagename, SLIDE_THUMB_DIR)
         self.thumbname = os.path.relpath(thumbname, settings.ALBUM)
@@ -75,10 +78,16 @@ class Slide(Section):
 
 
 def slide_set(dirname, *args):
+    # store calling location so that if we error out when generating the
+    # thumbnails we can inform the user where it happened
+    stack = inspect.stack()
+    calling_frame = stack[1]
+    error = 'line %s of %s' % (calling_frame.lineno, calling_frame.filename)
+
     dirname = os.path.abspath(dirname)
     slides = []
     for item in args:
-        slides.append(Slide(dirname, item))
+        slides.append(Slide(dirname, item, error))
 
     return slides
 
