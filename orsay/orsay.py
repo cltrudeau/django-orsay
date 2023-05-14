@@ -1,11 +1,8 @@
-import glob, os, shutil, subprocess
-
-from PIL import Image, ExifTags
+import glob, os, shutil
 
 from screwdriver import DictObject
 
-from .constants import (GALLERY_THUMB_DIR, THUMB_FILE_EXT, GALLERY_THUMB_SIZE,
-    COVER_THUMB_DIR)
+from .constants import GALLERY_THUMB_DIR, THUMB_FILE_EXT, GALLERY_THUMB_SIZE
 from .boot_django import boot_django
 from .gallery import make_galleries
 from .pages import make_pages, Carousel

@@ -22,14 +22,15 @@ SETUP_ARGS = dict(
         'Intended Audience :: Developers',
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
-        'Programming Language :: Python :: 3.7',
+        'Programming Language :: Python :: 3.11',
         'Topic :: Software Development :: Libraries :: Python Modules',
     ],
     keywords='django,static site,photo',
     #test_suite="load_tests.get_suite",
     install_requires=[
-        'Django>=2.1',
+        'Django>=4.1',
         'screwdriver>=0.14.0',
+        'Pillow==9.4.0',
     ],
     #tests_require=[
     #    'mock>=2.0.0',

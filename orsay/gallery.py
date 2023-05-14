@@ -1,7 +1,7 @@
 import os
 
-from django.template import loader, Context, Template, TemplateSyntaxError
-from screwdriver import list_to_rows, head_tail_middle
+from django.template import loader
+from screwdriver import list_to_rows
 
 from .utils import thumbpath
 

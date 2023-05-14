@@ -1,8 +1,7 @@
 import os, inspect
 from datetime import datetime
-from glob import glob
 
-from django.template import loader, Context, Template, TemplateSyntaxError
+from django.template import loader
 from django.utils.safestring import mark_safe
 
 from screwdriver import list_to_rows
