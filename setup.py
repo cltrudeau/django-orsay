@@ -30,7 +30,7 @@ SETUP_ARGS = dict(
     install_requires=[
         'Django>=4.1',
         'screwdriver>=0.14.0',
-        'Pillow==9.4.0',
+        'Pillow==10.0.1',
     ],
     #tests_require=[
     #    'mock>=2.0.0',
